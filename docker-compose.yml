@@ -16,3 +16,24 @@ services:
       - target: 8000
         published: 8000
     working_dir: /backend
+
+  local-database:
+    image: debezium/postgres
+    restart: always
+    container_name: local-database
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - 5432:5432
+    volumes:
+      - database:/var/lib/postgresql/data:Z
+      - ./docker-scripts/local-database.sql:/docker-entrypoint-initdb.d/local-database.sql
+    networks:
+      - project
+
+volumes:
+  database:
+
+networks:
+  project:
