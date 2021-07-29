@@ -3,7 +3,8 @@ import json
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.responses import HTMLResponse
 from sqlalchemy.orm import Session
-from backend.database.schema import CreateCard
+from sqlalchemy.sql.expression import update
+from backend.database.schema import CreateCard, UpdateCard
 from backend.database.database import get_db
 from backend.database.model import Card
 
@@ -26,6 +27,27 @@ def create(details: CreateCard, db: Session = Depends(get_db)) -> HTMLResponse:
         )
 
     return HTMLResponse(content='Added new card {}'.format(new_card.value), status_code=201)
+
+
+@router.put("/")
+def create(details: UpdateCard, db: Session = Depends(get_db)) -> HTMLResponse:
+    card_query = db.query(Card).filter(Card.id == details.id).first()
+    card = row2dict(card_query)
+    float_value = float(card['value'])
+    change_value = float(details.value)
+    new_value = str(float_value + change_value)
+
+    try:
+        db.execute(update(Card).where(
+            Card.id == details.id).values(value=new_value))
+        db.commit()
+    except:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Could not update card value",
+        )
+
+    return HTMLResponse(content='Udapted card value to: {}'.format(new_value), status_code=201)
 
 
 @router.get("/")
