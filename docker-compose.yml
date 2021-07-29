@@ -1,0 +1,18 @@
+version: "3.4"
+
+services:
+  backend:
+    restart: unless-stopped
+    container_name: backend
+    image: backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    volumes:
+      - type: bind
+        source: ./backend/
+        target: /backend/
+    ports:
+      - target: 8000
+        published: 8000
+    working_dir: /backend
