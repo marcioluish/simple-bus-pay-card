@@ -4,6 +4,8 @@ services:
   backend:
     restart: unless-stopped
     container_name: backend
+    depends_on:
+      - local-database
     image: backend
     build:
       context: ./backend
@@ -16,6 +18,8 @@ services:
       - target: 8000
         published: 8000
     working_dir: /backend
+    networks:
+      - project
 
   local-database:
     image: debezium/postgres
