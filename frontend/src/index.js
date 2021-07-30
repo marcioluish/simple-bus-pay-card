@@ -1,17 +1,40 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import axios from "axios";
+import React from "react";
+import ReactDOM from "react-dom";
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+import App from "./App";
+import "./index.css";
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+const retrieveCards = () => {
+  return new Promise((resolve, reject) => {
+    axios
+      .get("/cards/")
+      .then((response) => {
+        resolve(response);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
+
+function callBackEnd() {
+  let response;
+  try {
+    response = retrieveCards();
+  } catch (error) {
+    throw new Error(`Error retrieving cards from DB: ${error}`);
+  }
+  return response;
+}
+
+callBackEnd().then((response) => {
+  if (response.status === 200) {
+    ReactDOM.render(
+      <React.StrictMode>
+        <App cards={response.data} />
+      </React.StrictMode>,
+      document.getElementById("root")
+    );
+  }
+});
