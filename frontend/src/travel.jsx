@@ -83,10 +83,20 @@ export default function Travel(props) {
     }
   }, [originId, destinationId]);
 
+  const searchValue = (id) => {
+    let aux;
+    props.cards.forEach((card) => {
+      if (card.id == id) {
+        aux = parseFloat(card.value);
+        console.log("1");
+      }
+    });
+    return aux;
+  };
+
   const cardSelected = (event) => {
+    let value = searchValue(event.target.value);
     setCards(event.target.value);
-    let aux = parseInt(event.target.value) - 1;
-    let value = parseFloat(cardsValuesList[aux]);
     setCredit(value);
   };
 
