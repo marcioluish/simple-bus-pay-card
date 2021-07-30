@@ -1,7 +1,7 @@
 import json
 
 from fastapi import APIRouter, Depends, HTTPException, status
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, JSONResponse
 from sqlalchemy.orm import Session
 from sqlalchemy.sql.expression import update
 from backend.database.schema import CreateCard, UpdateCard
@@ -65,7 +65,7 @@ def retrieve(db: Session = Depends(get_db)) -> HTMLResponse:
             detail='Could not retrieve from cards table',
         )
 
-    return HTMLResponse(content=json.dumps(cards_list), status_code=201)
+    return JSONResponse(content=cards_list)
 
 
 def row2dict(card):
