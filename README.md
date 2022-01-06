@@ -1,32 +1,32 @@
-# Teste Fiesc
+# Bus Pay Card APP
 
 ## Deploy
-1 - Faça o clone do repositório:
+1 - Clone repository
 ```sh
 $ git clone https://github.com/marcioluish/teste-fiesc.git
 ```
 
-2 - Faça o build da aplicação:
+2 - Build application
 ```sh
 $ docker-compose build backend frontend
 ```
 
-2 - Suba os containers
+2 - Docker up containers
 ```sh
 $ docker-compose up -d
 ```
 ## Frontend
-Para acessar a aplicação:
+To access frontend:
 
 `http://localhost:3000`
 
 ## Backend
-O backend tem 3 rotas pertinentes aos cartões. 
+Backend has 3 main routes:
 
 URL: `http://localhost:8000/cards`
 
 1) POST
-Exemplo body:
+Register a new card with a given value. Body example:
 
 ```
 @value: str
@@ -36,10 +36,10 @@ Exemplo body:
 ```
 
 2) GET
-no body
+Retrieve card's balance. No body.
 
 3) PUT
-Exemplo body:
+Recharge a card's balance. Body example:
 
 ```
 @id: int
